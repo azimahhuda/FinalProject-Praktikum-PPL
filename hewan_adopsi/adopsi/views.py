@@ -165,10 +165,13 @@ def edit_hewan(request, pk):
 @user_passes_test(is_admin, login_url='admin_login')
 def hapus_hewan(request, pk):
     hewan = get_object_or_404(Hewan, pk=pk)
-    if request.method == 'POST':
+    
+    # Terima both GET dan POST
+    if request.method == 'POST' or request.method == 'GET':
         nama_hewan = hewan.nama
         hewan.delete()
         messages.success(request, f'Hewan {nama_hewan} berhasil dihapus!')
+    
     return redirect('dashboard_admin')
 
 @user_passes_test(is_admin, login_url='admin_login')
