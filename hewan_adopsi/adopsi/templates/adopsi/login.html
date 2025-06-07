@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Admin - PawfectHome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.1);
+            animation: floatShape 10s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 55%;
+            right: 12%;
+            animation-delay: 3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 90px;
+            height: 90px;
+            bottom: 25%;
+            left: 25%;
+            animation-delay: 6s;
+        }
+
+        .floating-admin-icon {
+            position: absolute;
+            font-size: 1.8rem;
+            color: rgba(52, 152, 219, 0.12);
+            animation: adminFloat 8s ease-in-out infinite;
+        }
+
+        .floating-admin-icon:nth-child(4) { top: 20%; right: 20%; animation-delay: 1s; }
+        .floating-admin-icon:nth-child(5) { bottom: 35%; right: 35%; animation-delay: 4s; }
+        .floating-admin-icon:nth-child(6) { top: 45%; left: 12%; animation-delay: 7s; }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(180deg); }
+        }
+
+        @keyframes adminFloat {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.12; }
+            50% { transform: translateY(-20px) scale(1.2); opacity: 0.25; }
+        }
+
+        .login-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 60px 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 480px;
+            animation: slideUp 1.2s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 45px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .login-icon {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            animation: iconBounce 3s infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-8px); }
+        }
+
+        .login-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .login-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+
+        .form-control {
+            border: 2px solid #ecf0f1;
+            border-radius: 18px;
+            padding: 18px 55px 18px 25px;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            background: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.15);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3498db;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            border: none;
+            border-radius: 18px;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            width: 100%;
+            transition: all 0.4s ease;
+            box-shadow: 0 12px 35px rgba(44, 62, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 45px rgba(44, 62, 80, 0.4);
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .login-btn i {
+            margin-right: 12px;
+        }
+
+        .alert {
+            border: none;
+            border-radius: 18px;
+            padding: 18px 25px;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            animation: alertSlide 0.6s ease-out;
+            position: relative;
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        @keyframes alertSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navigation-links {
+            text-align: center;
+            margin-top: 35px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .nav-link:hover {
+            color: #2980b9;
+            transform: translateX(8px);
+        }
+
+        .back-link {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #bdc3c7, transparent);
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 0 25px;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #2980b9;
+        }
+
+        .security-notice {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-size: 0.9rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 45px 35px;
+                margin: 20px;
+            }
+            
+            .login-title {
+                font-size: 2rem;
+            }
+            
+            .form-control {
+                padding: 15px 50px 15px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Loading animation */
+        .btn-loading {
+            pointer-events: none;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 50%;
+            left: 50%;
+            margin-left: -12px;
+            margin-top: -12px;
+            border: 3px solid transparent;
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Ripple effect keyframes */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <i class="fas fa-shield-alt floating-admin-icon"></i>
+        <i class="fas fa-cog floating-admin-icon"></i>
+        <i class="fas fa-user-shield floating-admin-icon"></i>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="admin-badge">
+                    <i class="fas fa-crown"></i> ADMINISTRATOR
+                </div>
+                <div class="login-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="login-title">Panel Admin</h3>
+                <p class="login-subtitle">Akses terbatas untuk administrator sistem</p>
+            </div>
+
+            <div class="security-notice">
+                <i class="fas fa-lock"></i>
+                Halaman ini hanya untuk administrator yang berwenang
+            </div>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <form method="POST" id="loginForm">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user-tie"></i> Username Admin
+                    </label>
+                    <input type="text" 
+                           name="username" 
+                           id="username"
+                           class="form-control" 
+                           placeholder="Masukkan username administrator"
+                           required>
+                    <i class="fas fa-user-tie input-icon"></i>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-key"></i> Kata Sandi
+                    </label>
+                    <input type="password" 
+                           name="password" 
+                           id="password"
+                           class="form-control" 
+                           placeholder="Masukkan kata sandi administrator"
+                           required>
+                    <button type="button" class="password-toggle" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <i class="fas fa-key input-icon"></i>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span id="buttonText">Masuk ke Panel Admin</span>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>navigasi</span>
+            </div>
+
+            <div class="navigation-links">
+                <div>
+                    <a href="{% url 'landing_page' %}" class="nav-link back-link">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali ke Halaman Depan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        });
+
+        // Form submission with loading state
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            const button = document.getElementById('loginButton');
+            const buttonText = document.getElementById('buttonText');
+            
+            button.classList.add('btn-loading');
+            buttonText.textContent = 'Memverifikasi...';
+            button.disabled = true;
+        });
+
+        // Input focus effects
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('.input-icon').style.color = '#3498db';
+                this.parentElement.querySelector('.input-icon').style.transform = 'translateY(-50%) scale(1.1)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('.input-icon').style.color = '#95a5a6';
+                this.parentElement.querySelector('.input-icon').style.transform = 'translateY(-50%) scale(1)';
+            });
+        });
+
+        // Add ripple effect to button
+        document.getElementById('loginButton').addEventListener('click', function(e) {
+            if (this.classList.contains('btn-loading')) return;
+            
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s linear';
+            ripple.style.pointerEvents = 'none';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Enhanced entrance animation
+        window.addEventListener('load', function() {
+            document.querySelector('.login-card').style.animation = 'slideUp 1.2s ease-out';
+        });
+
+        // Form validation feedback
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('invalid', function() {
+                this.style.borderColor = '#e74c3c';
+                this.style.boxShadow = '0 0 0 0.25rem rgba(231, 76, 60, 0.25)';
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.validity.valid) {
+                    this.style.borderColor = '#27ae60';
+                    this.style.boxShadow = '0 0 0 0.25rem rgba(39, 174, 96, 0.25)';
+                } else {
+                    this.style.borderColor = '#ecf0f1';
+                    this.style.boxShadow = 'none';
+                }
+            });
+        });
+
+        // Security enhancement - disable right click and dev tools shortcuts
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

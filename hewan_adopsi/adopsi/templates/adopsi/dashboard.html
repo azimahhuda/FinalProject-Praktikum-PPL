@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Pengguna - PawfectHome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: floatShape 8s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-paw {
+            position: absolute;
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            animation: pawFloat 6s ease-in-out infinite;
+        }
+
+        .floating-paw:nth-child(4) { top: 20%; right: 30%; animation-delay: 1s; }
+        .floating-paw:nth-child(5) { bottom: 35%; right: 25%; animation-delay: 3s; }
+        .floating-paw:nth-child(6) { top: 45%; left: 15%; animation-delay: 5s; }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(180deg); }
+        }
+
+        @keyframes pawFloat {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.15; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 0.3; }
+        }
+
+        .dashboard-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            padding: 40px 20px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 60px 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .welcome-section {
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .welcome-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .action-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .action-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-icon {
+            font-size: 2.2rem;
+            color: #667eea;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .action-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-button:hover::before {
+            left: 100%;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 45px rgba(102, 126, 234, 0.6);
+            color: white;
+        }
+
+        .action-button:active {
+            transform: translateY(-1px);
+        }
+
+        .action-button i {
+            font-size: 1.5rem;
+        }
+
+        .decorative-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+                .logout-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 3;
+        }
+
+        .logout-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .logout-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .logout-button:hover::before {
+            left: 100%;
+        }
+
+        .logout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .logout-button i {
+            font-size: 1.1rem;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 107, 107, 0.3);
+            animation: heartFloat 5s ease-in-out infinite;
+        }
+
+        .heart-float:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+        .heart-float:nth-child(2) { top: 30%; right: 20%; animation-delay: 2s; }
+        .heart-float:nth-child(3) { bottom: 25%; left: 25%; animation-delay: 4s; }
+
+        @keyframes heartFloat {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                opacity: 0.3; 
+            }
+            50% { 
+                transform: translateY(-15px) scale(1.2); 
+                opacity: 0.6; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2.2rem;
+            }
+            
+            .action-title {
+                font-size: 1.6rem;
+            }
+            
+            .action-button {
+                padding: 18px 30px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <i class="fas fa-paw floating-paw"></i>
+        <i class="fas fa-paw floating-paw"></i>
+        <i class="fas fa-paw floating-paw"></i>
+    </div>
+
+    <div class="logout-container">
+        <a href="{% url 'logout' %}" class="logout-button" onclick="return confirm('Apakah Anda yakin ingin logout?')">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <div class="decorative-elements">
+                <i class="fas fa-heart heart-float"></i>
+                <i class="fas fa-heart heart-float"></i>
+                <i class="fas fa-heart heart-float"></i>
+            </div>
+
+            <div class="welcome-section">
+                <div class="welcome-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h1 class="welcome-title">Selamat datang, {{ request.user.username }}!</h1>
+                <p class="welcome-subtitle">Ini adalah halaman dashboard pengguna.</p>
+            </div>
+
+            <div class="action-section">
+                <h2 class="action-title">
+                    <i class="fas fa-list action-icon"></i>
+                    Lihat Daftar Hewan
+                </h2>
+                <a href="/daftar-hewan" class="action-button">
+                    <i class="fas fa-paw"></i>
+                    <span>Klik disini</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add entrance animation on load
+        window.addEventListener('load', function() {
+            document.querySelector('.dashboard-card').style.animation = 'slideUp 1s ease-out';
+        });
+
+        // Add ripple effect to button
+        document.querySelector('.action-button').addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Random animation triggers
+        setInterval(() => {
+            const hearts = document.querySelectorAll('.heart-float');
+            const randomHeart = hearts[Math.floor(Math.random() * hearts.length)];
+            randomHeart.style.animationDuration = Math.random() * 2 + 4 + 's';
+        }, 3000);
+
+        setInterval(() => {
+            const paws = document.querySelectorAll('.floating-paw');
+            const randomPaw = paws[Math.floor(Math.random() * paws.length)];
+            randomPaw.style.animationDuration = Math.random() * 2 + 5 + 's';
+        }, 4000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ hewan.nama }} - PawfectHome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: floatShape 8s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-paw {
+            position: absolute;
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            animation: pawFloat 6s ease-in-out infinite;
+        }
+
+        .floating-paw:nth-child(4) { top: 20%; right: 30%; animation-delay: 1s; }
+        .floating-paw:nth-child(5) { bottom: 35%; right: 25%; animation-delay: 3s; }
+        .floating-paw:nth-child(6) { top: 45%; left: 15%; animation-delay: 5s; }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(180deg); }
+        }
+
+        @keyframes pawFloat {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.15; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 0.3; }
+        }
+
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            z-index: 2;
+            padding: 40px 20px;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .pet-profile {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pet-image-section {
+            text-align: center;
+        }
+
+        .pet-image {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .pet-image:hover {
+            transform: scale(1.02);
+        }
+
+        .pet-info-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pet-name {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .pet-type {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pet-type-icon {
+            font-size: 1.5rem;
+            color: #feca57;
+        }
+
+        .pet-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .pet-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .pet-detail-icon {
+            font-size: 1.3rem;
+            color: #667eea;
+            min-width: 30px;
+        }
+
+        .pet-detail-text {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .pet-description {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .description-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .description-icon {
+            color: #ff6b6b;
+            font-size: 1.3rem;
+        }
+
+        .description-text {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .adoption-form-section {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .form-icon {
+            font-size: 2rem;
+            color: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label i {
+            color: #667eea;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 45px rgba(102, 126, 234, 0.6);
+        }
+
+        .submit-button:active {
+            transform: translateY(-1px);
+        }
+
+        .decorative-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 107, 107, 0.3);
+            animation: heartFloat 5s ease-in-out infinite;
+        }
+
+        .heart-float:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+        .heart-float:nth-child(2) { top: 30%; right: 20%; animation-delay: 2s; }
+        .heart-float:nth-child(3) { bottom: 25%; left: 25%; animation-delay: 4s; }
+
+        @keyframes heartFloat {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                opacity: 0.3; 
+            }
+            50% { 
+                transform: translateY(-15px) scale(1.2); 
+                opacity: 0.6; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 30px 25px;
+                margin: 15px;
+            }
+            
+            .pet-profile {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .pet-name {
+                font-size: 2.5rem;
+                text-align: center;
+            }
+            
+            .pet-image {
+                height: 300px;
+            }
+            
+            .adoption-form-section {
+                padding: 30px 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .pet-name {
+                font-size: 2rem;
+            }
+            
+            .form-title {
+                font-size: 1.6rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/daftar-hewan" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
+
+    <div class="background-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <i class="fas fa-paw floating-paw"></i>
+        <i class="fas fa-paw floating-paw"></i>
+        <i class="fas fa-paw floating-paw"></i>
+    </div>
+
+    <div class="main-container">
+        <div class="main-card">
+            <div class="decorative-elements">
+                <i class="fas fa-heart heart-float"></i>
+                <i class="fas fa-heart heart-float"></i>
+                <i class="fas fa-heart heart-float"></i>
+            </div>
+
+            <div class="pet-profile">
+                <div class="pet-image-section">
+                    <img src="{{ hewan.foto.url }}" alt="{{ hewan.nama }}" class="pet-image">
+                </div>
+                
+                <div class="pet-info-section">
+                    <h1 class="pet-name">{{ hewan.nama }}</h1>
+                    <div class="pet-type">
+                        {% if hewan.jenis == 'Kucing' %}
+                            <i class="fas fa-cat pet-type-icon"></i>
+                        {% elif hewan.jenis == 'Anjing' %}
+                            <i class="fas fa-dog pet-type-icon"></i>
+                        {% elif hewan.jenis == 'Kelinci' %}
+                            <i class="fas fa-rabbit pet-type-icon"></i>
+                        {% elif hewan.jenis == 'Burung' %}
+                            <i class="fas fa-dove pet-type-icon"></i>
+                        {% elif hewan.jenis == 'Hamster' %}
+                            <i class="fas fa-mouse pet-type-icon"></i>
+                        {% else %}
+                            <i class="fas fa-paw pet-type-icon"></i>
+                        {% endif %}
+                        <span>{{ hewan.jenis }}</span>
+                    </div>
+                    
+                    <div class="pet-details">
+                        <div class="pet-detail">
+                            <i class="fas fa-birthday-cake pet-detail-icon"></i>
+                            <span class="pet-detail-text">{{ hewan.umur }} bulan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pet-description">
+                <h2 class="description-title">
+                    <i class="fas fa-info-circle description-icon"></i>
+                    Tentang {{ hewan.nama }}
+                </h2>
+                <p class="description-text">{{ hewan.deskripsi }}</p>
+            </div>
+
+            <div class="adoption-form-section">
+                <h2 class="form-title">
+                    <i class="fas fa-heart form-icon"></i>
+                    Form Pengajuan Adopsi
+                </h2>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i>
+                            Nama Lengkap
+                        </label>
+                        <input type="text" name="nama" class="form-input" placeholder="Masukkan nama lengkap Anda" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </label>
+                        <input type="email" name="email" class="form-input" placeholder="Masukkan alamat email Anda" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-comment-dots"></i>
+                            Alasan Adopsi
+                        </label>
+                        <textarea name="alasan" class="form-textarea" placeholder="Ceritakan mengapa Anda ingin mengadopsi {{ hewan.nama }} dan bagaimana Anda akan merawatnya..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Kirim Pengajuan Adopsi</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add entrance animation on load
+        window.addEventListener('load', function() {
+            document.querySelector('.main-card').style.animation = 'slideUp 1s ease-out';
+        });
+
+        // Add ripple effect to submit button
+        document.querySelector('.submit-button').addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Random animation triggers
+        setInterval(() => {
+            const hearts = document.querySelectorAll('.heart-float');
+            const randomHeart = hearts[Math.floor(Math.random() * hearts.length)];
+            randomHeart.style.animationDuration = Math.random() * 2 + 4 + 's';
+        }, 3000);
+
+        setInterval(() => {
+            const paws = document.querySelectorAll('.floating-paw');
+            const randomPaw = paws[Math.floor(Math.random() * paws.length)];
+            randomPaw.style.animationDuration = Math.random() * 2 + 5 + 's';
+        }, 4000);
+
+        // Form animation on focus
+        document.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+                this.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

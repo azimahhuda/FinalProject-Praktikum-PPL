@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Hewan - PawfectHome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: floatShape 8s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-paw {
+            position: absolute;
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.15);
+            animation: pawFloat 6s ease-in-out infinite;
+        }
+
+        .floating-paw:nth-child(4) { top: 20%; right: 30%; animation-delay: 1s; }
+        .floating-paw:nth-child(5) { bottom: 35%; right: 25%; animation-delay: 3s; }
+        .floating-paw:nth-child(6) { top: 45%; left: 15%; animation-delay: 5s; }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(180deg); }
+        }
+
+        @keyframes pawFloat {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.15; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 0.3; }
+        }
+
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            z-index: 2;
+            padding: 40px 20px;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .animals-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .animals-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .animal-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            padding: 25px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animal-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .animal-item:hover::before {
+            left: 100%;
+        }
+
+        .animal-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .animal-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .animal-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            min-width: 60px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animal-info {
+            flex: 1;
+        }
+
+        .animal-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .animal-details {
+            font-size: 1rem;
+            color: #666;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .animal-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .animal-detail i {
+            color: #feca57;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            border: 2px dashed #ddd;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .empty-text {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .decorative-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 107, 107, 0.3);
+            animation: heartFloat 5s ease-in-out infinite;
+        }
+
+        .heart-float:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+        .heart-float:nth-child(2) { top: 30%; right: 20%; animation-delay: 2s; }
+        .heart-float:nth-child(3) { bottom: 25%; left: 25%; animation-delay: 4s; }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+
+        @keyframes heartFloat {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                opacity: 0.3; 
+            }
+            50% { 
+                transform: translateY(-15px) scale(1.2); 
+                opacity: 0.6; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 30px 25px;
+                margin: 15px;
+            }
+            
+            .header-title {
+                font-size: 2rem;
+            }
+            
+            .animal-item {
+                padding: 20px 25px;
+            }
+            
+            .animal-link {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .animal-details {
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .animal-details {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/dashboard" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
+    <div class="background-elements">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <i class="fas fa-paw floating-paw"></i>
+        <i class="fas fa-paw floating-paw"></i>
+        <i class="fas fa-paw floating-paw"></i>
+    </div>
+
+    <div class="main-container">
+        <div class="main-card">
+            <div class="decorative-elements">
+                <i class="fas fa-heart heart-float"></i>
+                <i class="fas fa-heart heart-float"></i>
+                <i class="fas fa-heart heart-float"></i>
+            </div>
+
+            <div class="header-section">
+                <div class="header-icon">
+                    <i class="fas fa-list"></i>
+                </div>
+                <h1 class="header-title">Daftar Hewan Tersedia</h1>
+                <p class="header-subtitle">Temukan teman berbulu yang sempurna untuk keluarga Anda</p>
+            </div>
+
+            <div class="animals-section">
+                <ul class="animals-list">
+                    {% for hewan in hewans %}
+                        <li class="animal-item">
+                            <a href="{% url 'detail_hewan' hewan.pk %}" class="animal-link">
+                                <div class="animal-icon">
+                                    {% if hewan.jenis == 'Kucing' %}
+                                        <i class="fas fa-cat"></i>
+                                    {% elif hewan.jenis == 'Anjing' %}
+                                        <i class="fas fa-dog"></i>
+                                    {% elif hewan.jenis == 'Kelinci' %}
+                                        <i class="fas fa-rabbit"></i>
+                                    {% elif hewan.jenis == 'Burung' %}
+                                        <i class="fas fa-dove"></i>
+                                    {% elif hewan.jenis == 'Hamster' %}
+                                        <i class="fas fa-mouse"></i>
+                                    {% else %}
+                                        <i class="fas fa-paw"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="animal-info">
+                                    <div class="animal-name">{{ hewan.nama }}</div>
+                                    <div class="animal-details">
+                                        <div class="animal-detail">
+                                            <i class="fas fa-tag"></i>
+                                            <span>{{ hewan.jenis }}</span>
+                                        </div>
+                                        <div class="animal-detail">
+                                            <i class="fas fa-birthday-cake"></i>
+                                            <span>{{ hewan.umur }} bulan</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <div class="empty-text">Tidak ada hewan tersedia saat ini.</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add entrance animation on load
+        window.addEventListener('load', function() {
+            document.querySelector('.main-card').style.animation = 'slideUp 1s ease-out';
+        });
+
+        // Random animation triggers
+        setInterval(() => {
+            const hearts = document.querySelectorAll('.heart-float');
+            const randomHeart = hearts[Math.floor(Math.random() * hearts.length)];
+            randomHeart.style.animationDuration = Math.random() * 2 + 4 + 's';
+        }, 3000);
+
+        setInterval(() => {
+            const paws = document.querySelectorAll('.floating-paw');
+            const randomPaw = paws[Math.floor(Math.random() * paws.length)];
+            randomPaw.style.animationDuration = Math.random() * 2 + 5 + 's';
+        }, 4000);
+
+        // Add staggered animation to animal items
+        document.addEventListener('DOMContentLoaded', function() {
+            const animalItems = document.querySelectorAll('.animal-item');
+            animalItems.forEach((item, index) => {
+                item.style.animationDelay = (index * 0.1) + 's';
+                item.style.animation = 'slideUp 0.6s ease-out forwards';
+            });
+        });
+    </script>
+</body>
+</html>
